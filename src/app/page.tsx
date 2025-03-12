@@ -242,13 +242,13 @@ export default function DSATracker() {
           </div>
         </div>
 
-        {/* Item list */}
+        {/* Item list - Improved design */}
         <div className="bg-[#1F2223] rounded-lg shadow-lg overflow-hidden border border-zinc-800 transition-colors duration-200">
           <div className="p-4 border-b border-zinc-800 transition-colors duration-200 flex justify-between">
             <h2 className="text-lg font-medium text-[#bab4ab]">DSA Topics</h2>
-            <h2 className="text-lg font-medium text-[#bab4ab]">
-              {filteredItems.length}
-            </h2>
+            <span className="px-3 py-1 bg-zinc-800 text-gray-300 rounded-full text-sm font-medium">
+              {filteredItems.length} items
+            </span>
           </div>
 
           <div className="divide-y divide-zinc-800 transition-colors duration-200">
@@ -260,42 +260,57 @@ export default function DSATracker() {
               return (
                 <div
                   key={`${item.category}-${item.title}`}
-                  className="p-4 hover:bg-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-200"
+                  className="p-5 hover:bg-zinc-800/50 transition-all duration-200"
                 >
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-medium text-[#bab4ab]">
-                        {item.title}
-                      </h3>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center mb-2">
+                        <h3 className="font-medium text-[#bab4ab] text-lg">
+                          {item.title}
+                        </h3>
+                      </div>
+                      <div className="flex gap-2 text-sm text-gray-400 mb-3">
+                        <span className="px-2 py-0.5 bg-zinc-800 rounded-md">
+                          {item.category}
+                        </span>
+                        <span className="px-2 py-0.5 bg-zinc-800 rounded-md">
+                          {item.type}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-400 transition-colors duration-200">
-                      {item.category} • {item.type}
+                    <div className="flex gap-2 items-center">
+                      <button
+                        onClick={() => updateItemStatus(itemIndex, "pending")}
+                        className={getStatusClasses("pending", item.status)}
+                      >
+                        Pending
+                      </button>
+                      <button
+                        onClick={() =>
+                          updateItemStatus(itemIndex, "in-progress")
+                        }
+                        className={getStatusClasses("in-progress", item.status)}
+                      >
+                        In Progress
+                      </button>
+                      <button
+                        onClick={() => updateItemStatus(itemIndex, "complete")}
+                        className={getStatusClasses("complete", item.status)}
+                      >
+                        Complete
+                      </button>
                     </div>
-                  </div>
-                  <div className="flex gap-2 flex-wrap">
-                    <button
-                      onClick={() => updateItemStatus(itemIndex, "pending")}
-                      className={getStatusClasses("pending", item.status)}
-                    >
-                      Pending
-                    </button>
-                    <button
-                      onClick={() => updateItemStatus(itemIndex, "in-progress")}
-                      className={getStatusClasses("in-progress", item.status)}
-                    >
-                      In Progress
-                    </button>
-                    <button
-                      onClick={() => updateItemStatus(itemIndex, "complete")}
-                      className={getStatusClasses("complete", item.status)}
-                    >
-                      Complete
-                    </button>
                   </div>
                 </div>
               );
             })}
           </div>
+
+          {filteredItems.length === 0 && (
+            <div className="p-12 text-center text-gray-400">
+              <p>No items match your filter criteria</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
