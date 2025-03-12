@@ -123,9 +123,8 @@ export default function DSATracker() {
       return baseClasses + "bg-red-900 text-red-100 border-red-800";
     } else if (status === "in-progress") {
       return baseClasses + "bg-indigo-900 text-indigo-100 border-indigo-800";
-    } else {
-      return baseClasses + "bg-emerald-900 text-emerald-100 border-emerald-800";
     }
+    return baseClasses + "bg-emerald-900 text-emerald-100 border-emerald-800";
   };
 
   const stats = getProgressStats();
