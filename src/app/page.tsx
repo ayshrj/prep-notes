@@ -1,18 +1,15 @@
 "use client";
 
-import { dsaSheet as initialData } from "@/constants/dsa-sheet";
+import { Dsa, dsaSheet as initialData } from "@/constants/dsa-sheet";
 import { useState, useEffect } from "react";
 
 const DSA_PROGRESS_KEY = "dsa-progress-tracker";
 
 export default function DSATracker() {
   const [dsaItems, setDsaItems] = useState<
-    {
+    (Dsa & {
       status: string;
-      category: string;
-      title: string;
-      type: string;
-    }[]
+    })[]
   >([]);
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
@@ -88,30 +85,30 @@ export default function DSATracker() {
     return { total, complete, inProgress, pending };
   };
 
-  // Enhanced colorful status classes for buttons
+  // Custom status classes for buttons using the provided colors
   const getStatusClasses = (status: string, currentStatus: string) => {
     const baseClasses =
-      "px-3 py-1 text-xs rounded-md border transition-all duration-200 ";
+      "px-3 py-1 text-xs rounded-md border transition-all duration-200 cursor-pointer ";
     if (status === "pending") {
       return (
         baseClasses +
         (currentStatus === "pending"
-          ? "bg-red-900 text-red-100 border-red-800 shadow-md hover:bg-red-800"
-          : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700")
+          ? "border-red-600 bg-red-900/25 text-red-300 shadow-md hover:bg-red-900/40"
+          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-gray-700")
       );
     } else if (status === "in-progress") {
       return (
         baseClasses +
         (currentStatus === "in-progress"
-          ? "bg-indigo-900 text-indigo-100 border-indigo-800 shadow-md hover:bg-indigo-800"
-          : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700")
+          ? "border-blue-600 bg-slate-800 text-blue-300 shadow-md hover:bg-slate-700"
+          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-gray-700")
       );
     } else if (status === "complete") {
       return (
         baseClasses +
         (currentStatus === "complete"
-          ? "bg-emerald-900 text-emerald-100 border-emerald-800 shadow-md hover:bg-emerald-800"
-          : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700")
+          ? "border-green-600 bg-green-900/20 text-green-300 shadow-md hover:bg-green-900/30"
+          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-gray-700")
       );
     }
     return baseClasses;
@@ -120,71 +117,85 @@ export default function DSATracker() {
   const getStatusTagClasses = (status: string) => {
     const baseClasses = "text-xs font-medium px-2 py-1 rounded-full border ";
     if (status === "pending") {
-      return baseClasses + "bg-red-900 text-red-100 border-red-800";
+      return baseClasses + "border-red-600 bg-red-900/25 text-red-300";
     } else if (status === "in-progress") {
-      return baseClasses + "bg-indigo-900 text-indigo-100 border-indigo-800";
+      return baseClasses + "border-blue-600 bg-slate-800 text-blue-300";
+    } else {
+      return baseClasses + "border-green-600 bg-green-900/20 text-green-300";
     }
-    return baseClasses + "bg-emerald-900 text-emerald-100 border-emerald-800";
   };
 
   const stats = getProgressStats();
   const filteredItems = getFilteredItems();
 
   return (
-    <div className="bg-black text-gray-100 min-h-screen transition-colors duration-200 pb-6">
+    <div className="bg-[#181A1B] text-gray-100 min-h-screen transition-colors duration-200 pb-6">
       <div className="max-w-4xl mx-auto p-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-white">
-            DSA Progress Tracker
+          <h1 className="text-2xl font-bold text-[#bab4ab] tracking-widest">
+            Data Structure and Algorithms
           </h1>
         </div>
 
         {/* Progress overview */}
-        <div className="bg-zinc-900 rounded-lg shadow-lg p-4 mb-6 border border-zinc-800 transition-colors duration-200">
-          <h2 className="text-lg font-medium mb-3 text-white">
+        <div className="bg-[#1F2223] rounded-lg shadow-lg p-4 mb-6 border border-zinc-800 transition-colors duration-200">
+          <h2 className="text-lg font-medium mb-3 text-[#bab4ab]">
             Progress Overview
           </h2>
           <div className="flex flex-wrap gap-4">
-            <div className="bg-zinc-800 text-gray-200 rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg border border-zinc-700">
-              <div className="text-gray-400 text-sm">Total</div>
-              <div className="text-xl font-bold">{stats.total}</div>
+            <div className="border-zinc-700 bg-zinc-800 text-gray-200 rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg border">
+              <div className="text-gray-300 text-sm">Total</div>
+              <div className="text-xl font-bold text-gray-400">
+                {stats.total}
+              </div>
             </div>
-            <div className="bg-emerald-900 text-white rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg border border-emerald-800">
-              <div className="text-emerald-200 text-sm">Complete</div>
-              <div className="text-xl font-bold">{stats.complete}</div>
+            <div className="border-green-600 bg-green-900/20 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg">
+              <div className="text-green-300 text-sm">Complete</div>
+              <div className="text-xl font-bold text-green-400">
+                {stats.complete}
+              </div>
             </div>
-            <div className="bg-indigo-900 text-white rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg border border-indigo-800">
-              <div className="text-indigo-200 text-sm">In Progress</div>
-              <div className="text-xl font-bold">{stats.inProgress}</div>
+            <div className="border-blue-600 bg-slate-800 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg">
+              <div className="text-blue-300 text-sm">In Progress</div>
+              <div className="text-xl font-bold text-blue-400">
+                {stats.inProgress}
+              </div>
             </div>
-            <div className="bg-red-900 text-white rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg border border-red-800">
-              <div className="text-red-200 text-sm">Pending</div>
-              <div className="text-xl font-bold">{stats.pending}</div>
+            <div className="border-red-600 bg-red-900/25 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg">
+              <div className="text-red-300 text-sm">Pending</div>
+              <div className="text-xl font-bold text-red-400">
+                {stats.pending}
+              </div>
             </div>
           </div>
 
           {/* Progress bar */}
           <div className="mt-4 h-2 w-full bg-zinc-800 rounded-full overflow-hidden transition-colors duration-200">
             <div
-              style={{ width: `${(stats.complete / stats.total) * 100}%` }}
-              className="h-full bg-emerald-600"
+              style={{
+                width: `${
+                  stats.total ? (stats.complete / stats.total) * 100 : 0
+                }%`,
+              }}
+              className="h-full bg-green-600 transition-colors duration-300"
             ></div>
           </div>
           <div className="text-sm text-gray-400 mt-1 transition-colors duration-200">
-            {Math.round((stats.complete / stats.total) * 100)}% Complete
+            {stats.total ? Math.round((stats.complete / stats.total) * 100) : 0}
+            % Complete
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-zinc-900 rounded-lg shadow-lg p-4 mb-6 border border-zinc-800 transition-colors duration-200">
-          <h2 className="text-lg font-medium mb-3 text-white">Filters</h2>
+        <div className="bg-[#1F2223] rounded-lg shadow-lg p-4 mb-6 border border-zinc-800 transition-colors duration-200">
+          <h2 className="text-lg font-medium mb-3 text-[#bab4ab]">Filters</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1 text-gray-300">
                 Category
               </label>
               <select
-                className="w-full p-2 border rounded-md bg-zinc-800 border-zinc-700 text-white transition-all duration-200 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                className="w-full p-2 border rounded-md bg-zinc-800 border-zinc-700 text-[#bab4ab] transition-all duration-200 focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
@@ -200,7 +211,7 @@ export default function DSATracker() {
                 Type
               </label>
               <select
-                className="w-full p-2 border rounded-md bg-zinc-800 border-zinc-700 text-white transition-all duration-200 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                className="w-full p-2 border rounded-md bg-zinc-800 border-zinc-700 text-[#bab4ab] transition-all duration-200 focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
               >
@@ -216,7 +227,7 @@ export default function DSATracker() {
                 Status
               </label>
               <select
-                className="w-full p-2 border rounded-md bg-zinc-800 border-zinc-700 text-white transition-all duration-200 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                className="w-full p-2 border rounded-md bg-zinc-800 border-zinc-700 text-[#bab4ab] transition-all duration-200 focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -230,9 +241,9 @@ export default function DSATracker() {
         </div>
 
         {/* Item list */}
-        <div className="bg-zinc-900 rounded-lg shadow-lg overflow-hidden border border-zinc-800 transition-colors duration-200">
+        <div className="bg-[#1F2223] rounded-lg shadow-lg overflow-hidden border border-zinc-800 transition-colors duration-200">
           <div className="p-4 border-b border-zinc-800 transition-colors duration-200">
-            <h2 className="text-lg font-medium text-white">
+            <h2 className="text-lg font-medium text-[#bab4ab]">
               DSA Topics ({filteredItems.length})
             </h2>
           </div>
@@ -250,7 +261,9 @@ export default function DSATracker() {
                 >
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-medium text-white">{item.title}</h3>
+                      <h3 className="font-medium text-[#bab4ab]">
+                        {item.title}
+                      </h3>
                       <span className={getStatusTagClasses(item.status)}>
                         {item.status.charAt(0).toUpperCase() +
                           item.status.slice(1)}

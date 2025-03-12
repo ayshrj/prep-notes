@@ -1,20 +1,17 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Chakra_Petch } from "next/font/google";
 import "./globals.css";
 import type { Metadata } from "next";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const chakraPetch = Chakra_Petch({
+  variable: "--font-chakra-petch",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
-  title: "Flare",
-  description: "A chat app",
+  title: "DSA",
+  description: "Revision DSA App",
   icons: {
     icon: "/logo.svg",
   },
@@ -27,9 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black/10`}
-      >
+      <body className={`${chakraPetch.variable} antialiased bg-black/10`}>
         <main className="">{children}</main>
       </body>
     </html>
