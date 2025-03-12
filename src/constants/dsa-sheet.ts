@@ -1821,27 +1821,27 @@ export const dsaSheet: Dsa[] = [
     type: "Explanation",
   },
   {
-    category: "Dijoint Set",
+    category: "Disjoint Set",
     title: "Introduction to Disjoint Set",
     type: "Explanation",
   },
   {
-    category: "Dijoint Set",
+    category: "Disjoint Set",
     title: "Find and Union operations on Disjoint Set",
     type: "Explanation",
   },
   {
-    category: "Dijoint Set",
+    category: "Disjoint Set",
     title: "Union by Rank",
     type: "Question",
   },
   {
-    category: "Dijoint Set",
+    category: "Disjoint Set",
     title: "Path Compression",
     type: "Question",
   },
   {
-    category: "Dijoint Set",
+    category: "Disjoint Set",
     title: "Kruskal's Algorithm",
     type: "Question",
   },
