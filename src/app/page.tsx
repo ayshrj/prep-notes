@@ -88,41 +88,30 @@ export default function DSATracker() {
   // Custom status classes for buttons using the provided colors
   const getStatusClasses = (status: string, currentStatus: string) => {
     const baseClasses =
-      "px-3 py-1 text-xs rounded-md border transition-all duration-200 cursor-pointer ";
+      "px-3 py-1 sm:px-6 sm:py-2 text-xs md:text-sm rounded-md border transition-all duration-200 cursor-pointer ";
     if (status === "pending") {
       return (
         baseClasses +
         (currentStatus === "pending"
           ? "border-red-600 bg-red-900/25 text-red-300 shadow-md hover:bg-red-900/40"
-          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-gray-700")
+          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700")
       );
     } else if (status === "in-progress") {
       return (
         baseClasses +
         (currentStatus === "in-progress"
           ? "border-blue-600 bg-slate-800 text-blue-300 shadow-md hover:bg-slate-700"
-          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-gray-700")
+          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700")
       );
     } else if (status === "complete") {
       return (
         baseClasses +
         (currentStatus === "complete"
           ? "border-green-600 bg-green-900/20 text-green-300 shadow-md hover:bg-green-900/30"
-          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-gray-700")
+          : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700")
       );
     }
     return baseClasses;
-  };
-
-  const getStatusTagClasses = (status: string) => {
-    const baseClasses = "text-xs font-medium px-2 py-1 rounded-full border ";
-    if (status === "pending") {
-      return baseClasses + "border-red-600 bg-red-900/25 text-red-300";
-    } else if (status === "in-progress") {
-      return baseClasses + "border-blue-600 bg-slate-800 text-blue-300";
-    } else {
-      return baseClasses + "border-green-600 bg-green-900/20 text-green-300";
-    }
   };
 
   const stats = getProgressStats();
@@ -278,10 +267,6 @@ export default function DSATracker() {
                       <h3 className="font-medium text-[#bab4ab]">
                         {item.title}
                       </h3>
-                      <span className={getStatusTagClasses(item.status)}>
-                        {item.status.charAt(0).toUpperCase() +
-                          item.status.slice(1)}
-                      </span>
                     </div>
                     <div className="text-sm text-gray-400 transition-colors duration-200">
                       {item.category} • {item.type}
