@@ -142,26 +142,54 @@ export default function DSATracker() {
           <h2 className="text-lg font-medium mb-3 text-[#bab4ab]">
             Progress Overview
           </h2>
-          <div className="flex flex-wrap gap-4">
-            <div className="border-zinc-700 bg-zinc-800 text-gray-200 rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg border">
-              <div className="text-gray-300 text-sm">Total</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div
+              onClick={() => setStatusFilter("All")}
+              className={`bg-zinc-800 text-gray-200 rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer ${
+                statusFilter === "All"
+                  ? "border-4"
+                  : "border-4 border-transparent"
+              }`}
+            >
+              <div className="text-gray-300 text-sm">All</div>
               <div className="text-xl font-bold text-gray-400">
                 {stats.total}
               </div>
             </div>
-            <div className="border-green-600 bg-green-900/20 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg">
+            <div
+              onClick={() => setStatusFilter("complete")}
+              className={`border-green-600 bg-green-900/20 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer ${
+                statusFilter === "complete"
+                  ? "border-4"
+                  : "border-4 border-transparent"
+              }`}
+            >
               <div className="text-green-300 text-sm">Complete</div>
               <div className="text-xl font-bold text-green-400">
                 {stats.complete}
               </div>
             </div>
-            <div className="border-blue-600 bg-slate-800 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg">
+            <div
+              onClick={() => setStatusFilter("in-progress")}
+              className={`border-blue-600 bg-slate-800 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer ${
+                statusFilter === "in-progress"
+                  ? "border-4"
+                  : "border-4 border-transparent"
+              }`}
+            >
               <div className="text-blue-300 text-sm">In Progress</div>
               <div className="text-xl font-bold text-blue-400">
                 {stats.inProgress}
               </div>
             </div>
-            <div className="border-red-600 bg-red-900/25 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg">
+            <div
+              onClick={() => setStatusFilter("pending")}
+              className={`border-red-600 bg-red-900/25 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer ${
+                statusFilter === "pending"
+                  ? "border-4"
+                  : "border-4 border-transparent"
+              }`}
+            >
               <div className="text-red-300 text-sm">Pending</div>
               <div className="text-xl font-bold text-red-400">
                 {stats.pending}
@@ -189,7 +217,7 @@ export default function DSATracker() {
         {/* Filters */}
         <div className="bg-[#1F2223] rounded-lg shadow-lg p-4 mb-6 border border-zinc-800 transition-colors duration-200">
           <h2 className="text-lg font-medium mb-3 text-[#bab4ab]">Filters</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1 text-gray-300">
                 Category
@@ -222,29 +250,15 @@ export default function DSATracker() {
                 ))}
               </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1 text-gray-300">
-                Status
-              </label>
-              <select
-                className="w-full p-2 border rounded-md bg-zinc-800 border-zinc-700 text-[#bab4ab] transition-all duration-200 focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="All">All</option>
-                <option value="pending">Pending</option>
-                <option value="in-progress">In Progress</option>
-                <option value="complete">Complete</option>
-              </select>
-            </div>
           </div>
         </div>
 
         {/* Item list */}
         <div className="bg-[#1F2223] rounded-lg shadow-lg overflow-hidden border border-zinc-800 transition-colors duration-200">
-          <div className="p-4 border-b border-zinc-800 transition-colors duration-200">
+          <div className="p-4 border-b border-zinc-800 transition-colors duration-200 flex justify-between">
+            <h2 className="text-lg font-medium text-[#bab4ab]">DSA Topics</h2>
             <h2 className="text-lg font-medium text-[#bab4ab]">
-              DSA Topics ({filteredItems.length})
+              {filteredItems.length}
             </h2>
           </div>
 
