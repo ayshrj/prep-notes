@@ -4,9 +4,7 @@ import { dpLinks as links } from "@/constants/dp-links";
 import { Dsa } from "@/constants/dsa-sheet";
 import React, { useState, useEffect } from "react";
 
-const DSAProblemTracker: React.FC<{ redirectToALink: boolean }> = ({
-  redirectToALink = true,
-}) => {
+const DSAProblemTracker = () => {
   // Extract problem names and create initial data
   const extractProblemName = (url: string) => {
     try {
@@ -340,20 +338,14 @@ const DSAProblemTracker: React.FC<{ redirectToALink: boolean }> = ({
                   <div className="flex flex-col sm:flex-row gap-4">
                     <div className="flex-1">
                       <div className="flex items-center mb-2">
-                        {redirectToALink ? (
-                          <a
-                            href={item.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-medium text-[#bab4ab] text-lg hover:underline"
-                          >
-                            {item.title}
-                          </a>
-                        ) : (
-                          <h3 className="font-medium text-[#bab4ab] text-lg">
-                            {item.title}
-                          </h3>
-                        )}
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-[#bab4ab] text-lg hover:underline"
+                        >
+                          {item.title}
+                        </a>
                       </div>
                       <div className="flex gap-2 text-sm text-gray-400 mb-3">
                         <span className="px-2 py-0.5 bg-zinc-800 rounded-md">
