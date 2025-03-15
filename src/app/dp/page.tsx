@@ -43,10 +43,27 @@ const DSAProblemTracker: React.FC<{ redirectToALink: boolean }> = ({
   const createInitialData = () => {
     return links.map((link, index) => ({
       id: index,
-      title: extractProblemName(link),
-      url: link,
-      category: index % 2 === 0 ? "1D DP" : "2D DP",
-      type: index % 3 === 0 ? "Basic" : index % 3 === 1 ? "Medium" : "Hard",
+      title: extractProblemName(link.url),
+      url: link.url,
+      category:
+        index < 1
+          ? "Introduction to DP"
+          : index < 6
+          ? "1D DP"
+          : index < 13
+          ? "2D/3D DP and DP on Grids"
+          : index < 24
+          ? "DP on Subsequences"
+          : index < 34
+          ? "DP on Strings"
+          : index < 40
+          ? "DP on Stocks"
+          : index < 47
+          ? "DP on LIS"
+          : index < 54
+          ? "MCM DP | Partition DP"
+          : "DP on Squares",
+      type: link.diff,
       status: "pending",
     }));
   };
@@ -338,14 +355,14 @@ const DSAProblemTracker: React.FC<{ redirectToALink: boolean }> = ({
                           </h3>
                         )}
                       </div>
-                      {/* <div className="flex gap-2 text-sm text-gray-400 mb-3">
+                      <div className="flex gap-2 text-sm text-gray-400 mb-3">
                         <span className="px-2 py-0.5 bg-zinc-800 rounded-md">
                           {item.category}
                         </span>
                         <span className="px-2 py-0.5 bg-zinc-800 rounded-md">
                           {item.type}
                         </span>
-                      </div> */}
+                      </div>
                     </div>
                     <div className="flex gap-2 items-center">
                       <button
