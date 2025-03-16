@@ -1,8 +1,4 @@
-export type Dsa = {
-  category: string;
-  title: string;
-  type: string;
-};
+import { Dsa } from "@/types/Dsa";
 
 export const dsaSheet: Dsa[] = [
   {

@@ -1,106 +1,102 @@
 "use client";
 
-import { Dsa, dsaSheet as initialData } from "@/constants/dsa-sheet";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TrackerLayout from "@/components/TrackerLayout";
+import { dsaSheet } from "@/constants/dsa-sheet";
+import { Dsa } from "@/types/Dsa";
 import { getStatusClasses } from "@/utils/getStatusClasses";
+import { StatusCode } from "@/enums/StatusCode";
+import { codeToStatus } from "@/utils/codeToStatus";
+import { statusToCode } from "@/utils/statusToCode";
 
-const DSA_PROGRESS_KEY = "dsa-progress-tracker";
+const DSA_PROGRESS_KEY = "dsa-progress-statuses";
 
 export default function DSATracker() {
-  /** ------------------------------
-   *  1) Data & local state
-   */
-  const [dsaItems, setDsaItems] = useState<(Dsa & { status: string })[]>([]);
+  const baseItems = dsaSheet.map((item, i) => ({
+    ...item,
+    status: "pending" as const,
+    _index: i,
+  }));
+
+  const [dsaItems, setDsaItems] = useState<
+    (Dsa & { status: string; _index: number })[]
+  >([]);
+
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
   const [categories, setCategories] = useState(["All"]);
   const [types, setTypes] = useState(["All"]);
 
-  /** ------------------------------
-   *  2) Load from localStorage or default
-   */
   useEffect(() => {
-    const savedProgress = localStorage.getItem(DSA_PROGRESS_KEY);
-    if (savedProgress) {
-      setDsaItems(JSON.parse(savedProgress));
-    } else {
-      const initialItems = initialData.map((item) => ({
-        ...item,
-        status: "pending",
-      }));
-      setDsaItems(initialItems);
-      localStorage.setItem(DSA_PROGRESS_KEY, JSON.stringify(initialItems));
+    let finalItems: (Dsa & { status: string; _index: number })[] = [
+      ...baseItems,
+    ];
+    const stored = localStorage.getItem(DSA_PROGRESS_KEY);
+
+    if (stored) {
+      try {
+        const codes = JSON.parse(stored) as number[];
+        if (codes.length === baseItems.length) {
+          finalItems = baseItems.map((it, i) => ({
+            ...it,
+            status: codeToStatus(codes[i]),
+          }));
+        }
+      } catch (err) {
+        console.log("Error reading local storage:", err);
+      }
     }
+    setDsaItems(finalItems);
+
+    if (!stored) {
+      const pendingCodes = baseItems.map(() => StatusCode.Pending);
+      localStorage.setItem(DSA_PROGRESS_KEY, JSON.stringify(pendingCodes));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /** ------------------------------
-   *  3) Build filter dropdowns
-   */
   useEffect(() => {
     if (dsaItems.length > 0) {
-      const uniqueCategories = [
-        "All",
-        ...new Set(dsaItems.map((item) => item.category)),
-      ];
-      const uniqueTypes = [
-        "All",
-        ...new Set(dsaItems.map((item) => item.type)),
-      ];
-      setCategories(uniqueCategories);
-      setTypes(uniqueTypes);
+      const catSet = new Set(dsaItems.map((x) => x.category));
+      const typeSet = new Set(dsaItems.map((x) => x.type));
+      setCategories(["All", ...Array.from(catSet)]);
+      setTypes(["All", ...Array.from(typeSet)]);
     }
   }, [dsaItems]);
 
-  /** ------------------------------
-   *  4) Update status
-   */
   const updateItemStatus = (index: number, newStatus: string) => {
-    const updatedItems = [...dsaItems];
-    updatedItems[index].status = newStatus;
-    setDsaItems(updatedItems);
-    localStorage.setItem(DSA_PROGRESS_KEY, JSON.stringify(updatedItems));
+    const updated = [...dsaItems];
+    updated[index].status = newStatus;
+    setDsaItems(updated);
+
+    const codes = updated.map((x) => statusToCode(x.status));
+    localStorage.setItem(DSA_PROGRESS_KEY, JSON.stringify(codes));
   };
 
-  /** ------------------------------
-   *  5) Filtering
-   */
   const getFilteredItems = () => {
     return dsaItems.filter((item) => {
-      const matchesCategory =
+      const catOK =
         categoryFilter === "All" || item.category === categoryFilter;
-      const matchesType = typeFilter === "All" || item.type === typeFilter;
-      const matchesStatus =
-        statusFilter === "All" || item.status === statusFilter;
-
-      return matchesCategory && matchesType && matchesStatus;
+      const typeOK = typeFilter === "All" || item.type === typeFilter;
+      const statOK = statusFilter === "All" || item.status === statusFilter;
+      return catOK && typeOK && statOK;
     });
   };
 
-  /** ------------------------------
-   *  6) Progress stats
-   */
-  const getProgressStats = () => {
+  const getStats = () => {
     const total = dsaItems.length;
-    const completed = dsaItems.filter(
-      (item) => item.status === "completed"
-    ).length;
+    const completed = dsaItems.filter((x) => x.status === "completed").length;
     const inProgress = dsaItems.filter(
-      (item) => item.status === "in-progress"
+      (x) => x.status === "in-progress"
     ).length;
-    const pending = dsaItems.filter((item) => item.status === "pending").length;
-
+    const pending = dsaItems.filter((x) => x.status === "pending").length;
     return { total, completed, inProgress, pending };
   };
 
-  // Derived data
-  const stats = getProgressStats();
-  const filteredItems = getFilteredItems();
+  const stats = getStats();
+  const filtered = getFilteredItems();
 
-  /** ------------------------------
-   *  7) Render with shared layout
-   */
   return (
     <TrackerLayout
       pageTitle="Data Structure and Algorithms"
@@ -114,14 +110,12 @@ export default function DSATracker() {
       typeFilter={typeFilter}
       setTypeFilter={setTypeFilter}
       listTitle="DSA Topics"
-      filteredItemsLength={filteredItems.length}
-      /** no showSearch prop => defaults to false */
+      filteredItemsLength={filtered.length}
     >
-      {/* The actual item list goes here as children */}
       <div className="divide-y divide-zinc-800 transition-colors duration-200">
-        {filteredItems.map((item) => {
-          const itemIndex = dsaItems.findIndex(
-            (i) => i.category === item.category && i.title === item.title
+        {filtered.map((item) => {
+          const idx = dsaItems.findIndex(
+            (x) => x.category === item.category && x.title === item.title
           );
           return (
             <div
@@ -146,19 +140,19 @@ export default function DSATracker() {
                 </div>
                 <div className="flex gap-2 items-center">
                   <button
-                    onClick={() => updateItemStatus(itemIndex, "pending")}
+                    onClick={() => updateItemStatus(idx, "pending")}
                     className={getStatusClasses("pending", item.status)}
                   >
                     Pending
                   </button>
                   <button
-                    onClick={() => updateItemStatus(itemIndex, "in-progress")}
+                    onClick={() => updateItemStatus(idx, "in-progress")}
                     className={getStatusClasses("in-progress", item.status)}
                   >
                     In Progress
                   </button>
                   <button
-                    onClick={() => updateItemStatus(itemIndex, "completed")}
+                    onClick={() => updateItemStatus(idx, "completed")}
                     className={getStatusClasses("completed", item.status)}
                   >
                     Completed
@@ -170,7 +164,7 @@ export default function DSATracker() {
         })}
       </div>
 
-      {filteredItems.length === 0 && (
+      {filtered.length === 0 && (
         <div className="p-12 text-center text-gray-400">
           <p>No items match your filter criteria</p>
         </div>
