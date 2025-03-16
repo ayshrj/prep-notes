@@ -1,6 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import Link from "next/link";
+import { routes } from "@/constants/routes";
 
 /** Simple type for your progress stats */
 type Stats = {
@@ -55,6 +57,8 @@ export default function TrackerLayout({
   filteredItemsLength,
   children,
 }: TrackerLayoutProps) {
+  const [showPageSelector, setShowPageSelector] = useState(false);
+
   return (
     <div className="bg-[#181A1B] text-gray-100 min-h-screen transition-colors duration-200 pb-6">
       <div className="max-w-4xl mx-auto p-6">
@@ -67,9 +71,48 @@ export default function TrackerLayout({
 
         {/* Progress Overview */}
         <div className="bg-[#1F2223] rounded-lg shadow-lg p-4 mb-6 border border-zinc-800 transition-colors duration-200">
-          <h2 className="text-lg font-medium mb-3 text-[#bab4ab]">
-            Progress Overview
-          </h2>
+          <div className="flex w-full justify-between">
+            <h2 className="text-lg font-medium mb-3 text-[#bab4ab]">
+              Progress Overview
+            </h2>
+            <div className="relative">
+              <button
+                onClick={() => setShowPageSelector(!showPageSelector)}
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-200 flex items-center cursor-pointer hover:underline"
+              >
+                More
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+
+              {/* Page selector dropdown */}
+              {showPageSelector && (
+                <div className="absolute right-0 mt-2 w-48 bg-[#1F2223] rounded-md shadow-lg z-10 border border-zinc-700 overflow-hidden">
+                  <div className="py-1">
+                    {routes.map((page, index) => (
+                      <Link href={page.url} key={index}>
+                        <div className="block px-4 py-2 text-sm text-gray-200 hover:bg-zinc-700 cursor-pointer">
+                          {page.title}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div
               onClick={() => setStatusFilter("All")}
