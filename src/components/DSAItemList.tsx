@@ -1,12 +1,11 @@
-import { Dsa } from "@/types/Dsa";
+import { DsaItem } from "@/types/DsaItem";
 import { getStatusClasses } from "@/utils/getStatusClasses";
+import { toTitleCase } from "@/utils/toTitleCase";
 import React from "react";
 
-type DSAItem = Dsa & { id: string; status: string; url?: string };
-
 interface DSAItemListProps {
-  filtered: DSAItem[];
-  dsaItems: DSAItem[];
+  filtered: DsaItem[];
+  dsaItems: DsaItem[];
   updateItemStatus: (index: number, status: string) => void;
   useId?: boolean;
 }
@@ -17,8 +16,16 @@ const DSAItemList: React.FC<DSAItemListProps> = ({
   updateItemStatus,
   useId = false,
 }) => {
+  if (filtered.length === 0) {
+    return (
+      <div className="p-12 text-center text-gray-400">
+        <p>No items match your filter criteria</p>
+      </div>
+    );
+  }
+
   return (
-    <>
+    <div className="divide-y divide-zinc-800 transition-colors duration-200">
       {filtered.map((item) => {
         const index = dsaItems.findIndex((x) =>
           useId
@@ -65,9 +72,7 @@ const DSAItemList: React.FC<DSAItemListProps> = ({
                     onClick={() => updateItemStatus(index, status)}
                     className={getStatusClasses(status, item.status)}
                   >
-                    {status === "completed"
-                      ? "Completed"
-                      : status.replace("-", " ")}
+                    {toTitleCase(status.replace("-", " "))}
                   </button>
                 ))}
               </div>
@@ -75,7 +80,7 @@ const DSAItemList: React.FC<DSAItemListProps> = ({
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 

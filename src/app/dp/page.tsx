@@ -4,10 +4,11 @@ import React, { useState, useEffect } from "react";
 import TrackerLayout from "@/components/TrackerLayout";
 import { dpLinks } from "@/constants/dp-links";
 import { Dsa } from "@/types/Dsa";
-import { getStatusClasses } from "@/utils/getStatusClasses";
 import { StatusCode } from "@/enums/StatusCode";
 import { codeToStatus } from "@/utils/codeToStatus";
 import { statusToCode } from "@/utils/statusToCode";
+import DSAItemList from "@/components/DSAItemList";
+import { getStats } from "@/utils/getStats";
 
 const DP_PROGRESS_KEY = "dp-progress-statuses";
 
@@ -150,17 +151,7 @@ export default function DSAProblemTracker() {
     });
   };
 
-  const getStats = () => {
-    const total = dsaItems.length;
-    const completed = dsaItems.filter((x) => x.status === "completed").length;
-    const inProgress = dsaItems.filter(
-      (x) => x.status === "in-progress"
-    ).length;
-    const pending = dsaItems.filter((x) => x.status === "pending").length;
-    return { total, completed, inProgress, pending };
-  };
-
-  const stats = getStats();
+  const stats = getStats(dsaItems);
   const filtered = getFilteredItems();
 
   return (
@@ -181,66 +172,12 @@ export default function DSAProblemTracker() {
       listTitle="Problem List"
       filteredItemsLength={filtered.length}
     >
-      <div className="divide-y divide-zinc-800 transition-colors duration-200">
-        {filtered.map((item) => {
-          const actualIndex = dsaItems.findIndex((x) => x.id === item.id);
-          return (
-            <div
-              key={item.id}
-              className="p-5 hover:bg-zinc-800/50 transition-all duration-200"
-            >
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center mb-2">
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-medium text-[#bab4ab] text-lg hover:underline"
-                    >
-                      {item.title}
-                    </a>
-                  </div>
-                  <div className="flex gap-2 text-sm text-gray-400 mb-3">
-                    <span className="px-2 py-0.5 bg-zinc-800 rounded-md">
-                      {item.category}
-                    </span>
-                    <span className="px-2 py-0.5 bg-zinc-800 rounded-md">
-                      {item.type}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <button
-                    onClick={() => updateItemStatus(actualIndex, "pending")}
-                    className={getStatusClasses("pending", item.status)}
-                  >
-                    Pending
-                  </button>
-                  <button
-                    onClick={() => updateItemStatus(actualIndex, "in-progress")}
-                    className={getStatusClasses("in-progress", item.status)}
-                  >
-                    In Progress
-                  </button>
-                  <button
-                    onClick={() => updateItemStatus(actualIndex, "completed")}
-                    className={getStatusClasses("completed", item.status)}
-                  >
-                    Complete
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {filtered.length === 0 && (
-        <div className="p-12 text-center text-gray-400">
-          <p>No items match your filter criteria</p>
-        </div>
-      )}
+      <DSAItemList
+        filtered={filtered}
+        dsaItems={dsaItems}
+        updateItemStatus={updateItemStatus}
+        useId
+      />
     </TrackerLayout>
   );
 }
