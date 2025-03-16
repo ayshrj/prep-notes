@@ -217,7 +217,7 @@ const DSAProblemTracker = () => {
                   : "border-4 border-transparent"
               }`}
             >
-              <div className="text-green-300 text-sm">Complete</div>
+              <div className="text-green-300 text-sm">Completed</div>
               <div className="text-xl font-bold text-green-400">
                 {stats.complete}
               </div>
@@ -263,7 +263,7 @@ const DSAProblemTracker = () => {
           </div>
           <div className="text-sm text-gray-400 mt-1 transition-colors duration-200">
             {stats.total ? Math.round((stats.complete / stats.total) * 100) : 0}
-            % Complete
+            % Completed
           </div>
         </div>
 
