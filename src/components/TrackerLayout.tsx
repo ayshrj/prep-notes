@@ -126,7 +126,7 @@ export default function TrackerLayout({
           </div>
 
           {/* Progress bar */}
-          <div className="mt-4 h-2 w-full bg-zinc-800 rounded-full overflow-hidden transition-colors duration-200">
+          <div className="mt-4 h-2 w-full bg-zinc-800 rounded-full overflow-hidden transition-colors duration-200 flex flex-row">
             <div
               style={{
                 width: `${
@@ -134,6 +134,14 @@ export default function TrackerLayout({
                 }%`,
               }}
               className="h-full bg-green-600 transition-colors duration-300"
+            />
+            <div
+              style={{
+                width: `${
+                  stats.total ? (stats.inProgress / stats.total) * 100 : 0
+                }%`,
+              }}
+              className="h-full bg-blue-600 transition-colors duration-300"
             />
           </div>
           <div className="text-sm text-gray-400 mt-1 transition-colors duration-200">
