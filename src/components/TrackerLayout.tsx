@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { routes } from "@/constants/routes";
 
@@ -58,6 +58,26 @@ export default function TrackerLayout({
   children,
 }: TrackerLayoutProps) {
   const [showPageSelector, setShowPageSelector] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setShowPageSelector(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="bg-[#181A1B] text-gray-100 min-h-screen transition-colors duration-200 pb-6">
@@ -77,6 +97,7 @@ export default function TrackerLayout({
             </h2>
             <div className="relative">
               <button
+                ref={buttonRef}
                 onClick={() => setShowPageSelector(!showPageSelector)}
                 className="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-200 flex items-center cursor-pointer hover:underline"
               >
@@ -99,11 +120,17 @@ export default function TrackerLayout({
 
               {/* Page selector dropdown */}
               {showPageSelector && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#1F2223] rounded-md shadow-lg z-10 border border-zinc-700 overflow-hidden">
+                <div
+                  ref={dropdownRef}
+                  className="absolute right-0 mt-2 w-48 bg-[#1F2223] rounded-md shadow-lg z-10 border border-zinc-700 overflow-hidden"
+                >
                   <div className="py-1">
                     {routes.map((page, index) => (
                       <Link href={page.url} key={index}>
-                        <div className="block px-4 py-2 text-sm text-gray-200 hover:bg-zinc-700 cursor-pointer">
+                        <div
+                          className="block px-4 py-2 text-sm text-gray-200 hover:bg-zinc-700 cursor-pointer"
+                          onClick={() => setShowPageSelector(false)}
+                        >
                           {page.title}
                         </div>
                       </Link>
