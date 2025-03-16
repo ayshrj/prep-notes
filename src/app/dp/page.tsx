@@ -148,15 +148,15 @@ const DSAProblemTracker = () => {
    */
   const getProgressStats = () => {
     const total = dsaItems.length;
-    const complete = dsaItems.filter(
-      (item) => item.status === "complete"
+    const completed = dsaItems.filter(
+      (item) => item.status === "completed"
     ).length;
     const inProgress = dsaItems.filter(
       (item) => item.status === "in-progress"
     ).length;
     const pending = dsaItems.filter((item) => item.status === "pending").length;
 
-    return { total, complete, inProgress, pending };
+    return { total, completed, inProgress, pending };
   };
 
   // Derived data
@@ -228,8 +228,8 @@ const DSAProblemTracker = () => {
                     In Progress
                   </button>
                   <button
-                    onClick={() => updateItemStatus(itemIndex, "complete")}
-                    className={getStatusClasses("complete", item.status)}
+                    onClick={() => updateItemStatus(itemIndex, "completed")}
+                    className={getStatusClasses("completed", item.status)}
                   >
                     Completed
                   </button>

@@ -15,10 +15,10 @@ export const getStatusClasses = (status: string, currentStatus: string) => {
         ? "border-blue-600 bg-slate-800 text-blue-300 shadow-md hover:bg-slate-700"
         : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700")
     );
-  } else if (status === "complete") {
+  } else if (status === "completed") {
     return (
       base +
-      (currentStatus === "complete"
+      (currentStatus === "completed"
         ? "border-green-600 bg-green-900/20 text-green-300 shadow-md hover:bg-green-900/30"
         : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700")
     );

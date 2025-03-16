@@ -5,7 +5,7 @@ import React from "react";
 /** Simple type for your progress stats */
 type Stats = {
   total: number;
-  complete: number;
+  completed: number;
   inProgress: number;
   pending: number;
 };
@@ -13,8 +13,8 @@ type Stats = {
 /** Props for the reusable layout */
 interface TrackerLayoutProps {
   pageTitle: string; // e.g. "Dynamic Programming Problems"
-  stats: Stats; // { total, complete, inProgress, pending }
-  statusFilter: string; // "All" | "pending" | "in-progress" | "complete"
+  stats: Stats; // { total, completed, inProgress, pending }
+  statusFilter: string; // "All" | "pending" | "in-progress" | "completed"
   setStatusFilter: (filter: string) => void;
   categories: string[]; // All category options
   categoryFilter: string; // currently-selected category
@@ -85,16 +85,16 @@ export default function TrackerLayout({
               </div>
             </div>
             <div
-              onClick={() => setStatusFilter("complete")}
+              onClick={() => setStatusFilter("completed")}
               className={`border-green-600 bg-green-900/20 text-[#bab4ab] rounded-lg p-3 flex-1 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer ${
-                statusFilter === "complete"
+                statusFilter === "completed"
                   ? "border-4"
                   : "border-4 border-transparent"
               }`}
             >
               <div className="text-green-300 text-sm">Completed</div>
               <div className="text-xl font-bold text-green-400">
-                {stats.complete}
+                {stats.completed}
               </div>
             </div>
             <div
@@ -130,14 +130,16 @@ export default function TrackerLayout({
             <div
               style={{
                 width: `${
-                  stats.total ? (stats.complete / stats.total) * 100 : 0
+                  stats.total ? (stats.completed / stats.total) * 100 : 0
                 }%`,
               }}
               className="h-full bg-green-600 transition-colors duration-300"
             />
           </div>
           <div className="text-sm text-gray-400 mt-1 transition-colors duration-200">
-            {stats.total ? Math.round((stats.complete / stats.total) * 100) : 0}
+            {stats.total
+              ? Math.round((stats.completed / stats.total) * 100)
+              : 0}
             % Completed
           </div>
         </div>
