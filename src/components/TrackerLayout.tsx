@@ -84,8 +84,8 @@ export default function TrackerLayout({
       <div className="max-w-4xl mx-auto p-6">
         {/* Page heading */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-[#bab4ab] tracking-widest">
-            {pageTitle}
+          <h1 className="text-2xl font-bold text-[#bab4ab] tracking-widest flex items-center">
+            <span>{pageTitle}</span>
           </h1>
         </div>
 
