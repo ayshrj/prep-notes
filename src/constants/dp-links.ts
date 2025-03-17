@@ -100,10 +100,6 @@ export const dpLinks = [
     diff: "Moderate",
   },
   {
-    url: "https://www.naukri.com/code360/problems/longest-common-subsequence_624879",
-    diff: "Moderate",
-  },
-  {
     url: "https://www.naukri.com/code360/problems/longest-common-substring_1235207",
     diff: "Moderate",
   },
