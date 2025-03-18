@@ -28,6 +28,7 @@ export default function DSATracker() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [categories, setCategories] = useState(["All"]);
   const [types, setTypes] = useState(["All"]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     let finalItems: (Dsa & { status: string; index: number })[] = [
@@ -81,7 +82,11 @@ export default function DSATracker() {
         categoryFilter === "All" || item.category === categoryFilter;
       const typeOK = typeFilter === "All" || item.type === typeFilter;
       const statOK = statusFilter === "All" || item.status === statusFilter;
-      return catOK && typeOK && statOK;
+      const searchOK = item.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      return catOK && typeOK && statOK && searchOK;
     });
   };
 
@@ -100,6 +105,9 @@ export default function DSATracker() {
       types={types}
       typeFilter={typeFilter}
       setTypeFilter={setTypeFilter}
+      showSearch={true}
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
       listTitle="DSA Topics"
       filteredItemsLength={filtered.length}
     >
