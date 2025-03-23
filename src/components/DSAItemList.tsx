@@ -26,7 +26,7 @@ const DSAItemList: React.FC<DSAItemListProps> = ({
 
   return (
     <div className="divide-y divide-zinc-800 transition-colors duration-200">
-      {filtered.map((item) => {
+      {filtered.map((item, idx) => {
         const index = dsaItems.findIndex((x) =>
           useId
             ? x.id === item.id
@@ -35,7 +35,7 @@ const DSAItemList: React.FC<DSAItemListProps> = ({
 
         return (
           <div
-            key={useId ? item.id : `${item.category}-${item.title}`}
+            key={idx}
             className="p-5 hover:bg-zinc-800/50 transition-all duration-200"
           >
             <div className="flex flex-col sm:flex-row gap-4">
