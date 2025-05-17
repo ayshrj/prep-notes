@@ -10,7 +10,7 @@ import { statusToCode } from "@/utils/statusToCode";
 import DSAItemList from "@/components/DSAItemList";
 import { getStats } from "@/utils/getStats";
 
-const DSA_PROGRESS_KEY = "dsa-progress-statuses";
+const DSA_PROGRESS_KEY = "70-dsa-statuses";
 
 export default function DSATracker() {
   const baseItems = _70Dsa.map((item, i) => ({
