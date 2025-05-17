@@ -17,6 +17,7 @@ export default function DSATracker() {
     ...item,
     status: "pending" as const,
     index: i,
+    id: i,
   }));
 
   const [dsaItems, setDsaItems] = useState<
@@ -115,6 +116,7 @@ export default function DSATracker() {
         filtered={filtered}
         dsaItems={dsaItems}
         updateItemStatus={updateItemStatus}
+        useId
       />
     </TrackerLayout>
   );
