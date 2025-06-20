@@ -398,7 +398,7 @@ export const dsaSheet: Dsa[] = [
   },
   {
     category: "Arrays",
-    title: "Maximum Appearing ELement in Ranges",
+    title: "Maximum Appearing Element in Ranges",
     type: "Question",
   },
   {
@@ -703,7 +703,7 @@ export const dsaSheet: Dsa[] = [
   },
   {
     category: "Hashing",
-    title: "Frequencies of Array ELements",
+    title: "Frequencies of Array Elements",
     type: "Question",
   },
   {
