@@ -115,6 +115,7 @@ export default function DSATracker() {
         filtered={filtered}
         dsaItems={dsaItems}
         updateItemStatus={updateItemStatus}
+        useId
       />
     </TrackerLayout>
   );
