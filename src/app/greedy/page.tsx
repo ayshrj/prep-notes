@@ -59,7 +59,7 @@ export default function DSAProblemTracker() {
   };
 
   const [dsaItems, setDsaItems] = useState<
-    (Dsa & { status: string; id: number; url?: string })[]
+    (Dsa & { status: string; id: number; url?: string | string[] })[]
   >([]);
 
   const [categoryFilter, setCategoryFilter] = useState("All");

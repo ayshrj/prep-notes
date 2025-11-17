@@ -27,6 +27,13 @@ const DSAItemList: React.FC<DSAItemListProps> = ({
   return (
     <div className="divide-y divide-zinc-800 transition-colors duration-200">
       {filtered.map((item, idx) => {
+        const urls = Array.isArray(item.url)
+          ? item.url
+          : item.url
+          ? [item.url]
+          : [];
+        const primaryUrl = urls[0];
+        const extraUrls = urls.slice(1);
         const index = dsaItems.findIndex((x) =>
           useId
             ? x.id === item.id
@@ -40,10 +47,10 @@ const DSAItemList: React.FC<DSAItemListProps> = ({
           >
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
-                <div className="flex items-center mb-2">
-                  {useId && item.url ? (
+                <div className="flex flex-col gap-2 mb-2">
+                  {useId && primaryUrl ? (
                     <a
-                      href={item.url}
+                      href={primaryUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-medium text-[#bab4ab] text-lg hover:underline"
@@ -54,6 +61,21 @@ const DSAItemList: React.FC<DSAItemListProps> = ({
                     <h3 className="font-medium text-[#bab4ab] text-lg">
                       {item.title}
                     </h3>
+                  )}
+                  {useId && extraUrls.length > 0 && (
+                    <div className="flex flex-wrap gap-2 text-sm">
+                      {extraUrls.map((link, linkIdx) => (
+                        <a
+                          key={`${item.id ?? idx}-extra-${linkIdx}`}
+                          href={link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-300 transition-colors duration-200 underline underline-offset-4"
+                        >
+                          {`Link ${linkIdx + 2}`}
+                        </a>
+                      ))}
+                    </div>
                   )}
                 </div>
                 <div className="flex gap-2 text-sm text-gray-400 mb-3">

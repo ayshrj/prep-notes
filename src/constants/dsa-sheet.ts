@@ -275,7 +275,10 @@ export const dsaSheet: Dsa[] = [
     category: "Recursion",
     title: "Generate Subsets",
     type: "Question",
-    url: "https://www.geeksforgeeks.org/dsa/recursive-program-to-generate-power-set/",
+    url: [
+      "https://www.geeksforgeeks.org/dsa/recursive-program-to-generate-power-set/",
+      "https://www.geeksforgeeks.org/dsa/backtracking-to-find-all-subsets/",
+    ],
   },
   {
     category: "Recursion",
