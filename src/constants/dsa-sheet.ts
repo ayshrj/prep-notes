@@ -131,7 +131,7 @@ export const dsaSheet: Dsa[] = [
     category: "Mathematics",
     title: "Check for prime",
     type: "Question",
-    url: "https://www.geeksforgeeks.org/check-if-a-number-is-prime-or-not/",
+    url: "https://www.geeksforgeeks.org/dsa/check-for-prime-number/",
   },
   {
     category: "Mathematics",
