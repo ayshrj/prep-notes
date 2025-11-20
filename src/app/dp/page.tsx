@@ -66,7 +66,9 @@ export default function DSAProblemTracker() {
 
       return {
         id: i,
-        title: extractProblemName(link.url),
+        title: extractProblemName(
+          Array.isArray(link.url) ? link.url[0] : link.url
+        ),
         url: link.url,
         category,
         type: link.diff,
